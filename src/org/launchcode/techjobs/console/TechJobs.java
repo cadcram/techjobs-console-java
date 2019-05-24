@@ -1,8 +1,6 @@
 package org.launchcode.techjobs.console;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -60,11 +58,20 @@ public class TechJobs {
                 System.out.println("\nSearch term: ");
                 String searchTerm = in.nextLine();
 
-                if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
-                } else {
-                    printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
-                }
+
+            //    try {
+                    if (searchField.equals("all")) {
+                        printJobs(JobData.findByValue(searchTerm));
+                    } else {
+                        printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                    }
+               // }
+//                catch (NullPointerException ex) {
+//                    System.out.println(ex.getMessage());
+//                }
+                // Catches the exception
+                // The error message in the thrown in the JobData class under the findByColumnAndValue method
+
             }
         }
     }
@@ -111,6 +118,34 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        Integer counter = 0;
+
+        System.out.println("Debugging here " +someJobs);
+
+        // There is an ArrayList of HashMaps so I will iterate through them
+        for (int a = 0; a < someJobs.size(); a++) {
+            // Declaring a new HashMap by getting the index from the ArrayList
+            HashMap<String, String> jobOpening = (HashMap<String, String>) someJobs.get(a);
+            // Creating a set of key values from the jobOpening HashMap
+            Set<String> key = jobOpening.keySet();
+            // Not exactly sure what the iterator does but I think it orders it so that the
+            // keys can be iterated through
+            Iterator it = key.iterator();
+
+
+
+            System.out.println("*****\n");
+            while (it.hasNext()) {
+                String jobKey = (String)it.next();
+                String jobValue = (String) jobOpening.get(jobKey);
+
+                System.out.println(jobKey + ": " + jobValue);
+
+                //it.remove(); //avoids a ConcurrentModificationException
+            }
+            System.out.println("\n*****");
+            counter++;
+        }
+        System.out.println(counter);
     }
 }

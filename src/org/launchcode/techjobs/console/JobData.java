@@ -69,18 +69,47 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
-
+        String newValue = value.toLowerCase();
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
-            if (aValue.contains(value)) {
+
+            if (aValue.contains(newValue)) {
                 jobs.add(row);
             }
+//            else {
+//                throw new NullPointerException("Search entry does not exist. Please try again.");
+//            }
         }
 
+        return jobs;
+    }
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // load data, if not already loaded
+        loadData();
+        String newValue = value.toLowerCase();
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (int a = 0; a < allJobs.size(); a++) {
+
+            HashMap<String,String> jobOpening = allJobs.get(a);
+            // Cycles through every value in a certain job opening
+            for (String val : jobOpening.values()) {
+                // if it contains the value in part it will add the job opening to jobs list
+                // breaks to prevent duplicates
+                String newVal = val.toLowerCase();
+                if (newVal.contains(newValue)) {
+                    jobs.add(jobOpening);
+                    break;
+                }
+            }
+        }
+//        if (jobs.size() == 0) {
+//            throw new NullPointerException("Search entry does not exist. Please try again.");
+//        }
         return jobs;
     }
 
